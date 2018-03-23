@@ -17,18 +17,19 @@
 #define STATUS_P2PTX_COMPLETE  "at+recv=9,0,0"
 #define STATUS_UNKNOWN  "at+recv=100,0,0"
 
+#define SWTXpin 11
+#define SWRXpin 10
 
-#define TXpin 11
-#define RXpin 10
-SoftwareSerial DebugSerial(RXpin,TXpin);
-#define ATSerial Serial
+//SoftwareSerial DebugSerial(SWRXpin,SWTXpin);
+#define ATSerial Serial1
+#define DebugSerial Serial
 
 
 void setup() {
   DebugSerial.begin(115200);
   ATSerial.begin(115200);
   ATSerial.setTimeout(10000);
-  while(DebugSerial.read()>= 0) {}
+  while(DebugSerial.read() >= 0) {}
     while(!DebugSerial);
   DebugSerial.println("Boot");
 }
@@ -73,31 +74,31 @@ void loop() {
     DebugSerial.println("1 Did not get expected response, retry");
   }
   
-  while (!sendATcommand("at+band", "OKEU868", 2000)){
+  while (!sendATcommand("at+band", "OKEU868\r\n", 2000)){
     DebugSerial.println("2 Did not get expected response, retry");
   }
   
-  while (!sendATcommand("at+mode=0", "OK", 2000)){
+  while (!sendATcommand("at+mode=0", "OK\r\n", 2000)){
     DebugSerial.println("3 Did not get expected response, retry");
   }
   //RETRY
   
-  while (!sendATcommand("at+set_config=app_key:YOURKEYHERE", "OK", 2000)){
+  while (!sendATcommand("at+set_config=app_key:YOURKEYHERE", "OK\r\n", 2000)){
     DebugSerial.println("4 Did not get expected response, retry");
   }
   //RETRY
   
-  while (!sendATcommand("at+set_config=app_eui:YOURKEYHERE", "OK", 2000)){
+  while (!sendATcommand("at+set_config=app_eui:YOURKEYHERE", "OK\r\n", 2000)){
     DebugSerial.println("5 Did not get expected response, retry");
   }
   //RETRY
   
-  while (!sendATcommand("at+set_config=dev_eui:YOURKEYHERE", "OK", 2000)){
+  while (!sendATcommand("at+set_config=dev_eui:YOURKEYHERE", "OK\r\n", 2000)){
     DebugSerial.println("6 Did not get expected response, retry");
   }
   //RETRY
   
-  while (!sendATcommand("at+join=otaa", "OK", 2000)){
+  while (!sendATcommand("at+join=otaa", "OK\r\n", 2000)){
     DebugSerial.println("7 Did not get expected response, retry");
   }
   //RETRY
